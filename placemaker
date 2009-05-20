@@ -17,7 +17,7 @@ $OPT{appid} = undef;
 $OPT{inputLanguage} = 'en-US';
 $OPT{documentType} = 'text/html';
 $OPT{outputType} = 'xml';
-$OPT{autoDisambiguate} = '1';
+$OPT{autoDisambiguate} = 'true';
 
 
 sub do_pm
@@ -47,10 +47,11 @@ sub usage
   my $spad = (' ') x length($name);
   print <<EOF;
 usage: $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
-       $spad [ --inputLanguage=lang-code] [ --autodisambiguate=0|1 ]
+       $spad [ --inputLanguage=lang-code] [ --autoDisambiguate=true|false ]
        $spad [ --outputType={xml|rss} ] url(s) ...
   or:
        $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
+       $spad [ --inputLanguage=lang-code] [ --autoDisambiguate=true|false ]
        $spad [ --outputType={xml|rss} ] -
 
 EOF
@@ -61,8 +62,8 @@ EOF
   my $show_usage = 0;
   GetOptions(
       'appid|a=s' => \$OPT{appid},
-      'autodisambiguate|auto|t=s' => \$OPT{autoDisambiguate},
-      'inputLanguage|lang|t=s' => \$OPT{inputLanguage},
+      'autoDisambiguate|auto|d=s' => \$OPT{autoDisambiguate},
+      'inputLanguage|lang|l=s' => \$OPT{inputLanguage},
       'documentType|type|t=s' => \$OPT{documentType},
       'outputType|format|f=s' => \$OPT{outputType},
       'h|help' => \$show_usage
