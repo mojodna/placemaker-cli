@@ -14,8 +14,11 @@ $CFG{placemaker}{uri} = new URI('http://wherein.yahooapis.com/v1/document');
 
 my %OPT;
 $OPT{appid} = undef;
+$OPT{inputLanguage} = 'en-US';
 $OPT{documentType} = 'text/html';
 $OPT{outputType} = 'xml';
+$OPT{autodisambiguate} = '1';
+
 
 sub do_pm
 {
@@ -44,6 +47,7 @@ sub usage
   my $spad = (' ') x length($name);
   print <<EOF;
 usage: $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
+       $spad [ --inputLanguage=lang-code] [ --autodisambiguate=0|1 ]
        $spad [ --outputType={xml|rss} ] url(s) ...
 
 EOF
@@ -54,6 +58,8 @@ EOF
   my $show_usage = 0;
   GetOptions(
       'appid|a=s' => \$OPT{appid},
+      'autodisambiguate|auto|t=s' => \$OPT{inputLanguage},
+      'inputLanguage|lang|t=s' => \$OPT{inputLanguage},
       'documentType|type|t=s' => \$OPT{documentType},
       'outputType|format|f=s' => \$OPT{outputType},
       'h|help' => \$show_usage

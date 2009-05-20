@@ -10,4 +10,10 @@ To use it, point it at a URL that you'd like locations extracted from:
 
     $ ./placemaker --appid <appid> <url>
 
+Optional arguments are (default):
+    $ --documentType=mime/type   (text/html)
+    $ --inputLanguage=lang-code  (en-US)
+    $ --autodisambiguate=0|1     (1)
+    $ --outputType={xml|rss}     (xml)
+
 To register for an app id, visit https://developer.yahoo.com/wsregapp/
