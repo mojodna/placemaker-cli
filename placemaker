@@ -45,6 +45,9 @@ sub usage
   print <<EOF;
 usage: $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
        $spad [ --outputType={xml|rss} ] url(s) ...
+  or:
+       $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
+       $spad [ --outputType={xml|rss} ] -
 
 EOF
   exit 64;
@@ -64,6 +67,16 @@ EOF
 
 foreach my $u (@ARGV)
 {
-  my $c = do_pm(documentURL => $u);
+  my %q;
+  if ($u eq '-')
+  {
+    local $/ = undef;
+    %q = (documentContent => <> );
+  }
+  else
+  {
+    %q = (documentURL => $u);
+  }
+  my $c = do_pm(%q);
   print $c if defined $c;
 }
