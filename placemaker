@@ -1,0 +1,69 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use File::Basename;
+use Getopt::Long qw(:config bundling);
+use HTTP::Request::Common;
+use LWP::UserAgent;
+use URI;
+
+my %CFG;
+$CFG{placemaker}{uri} = new URI('http://wherein.yahooapis.com/v1/document');
+
+my %OPT;
+$OPT{appid} = undef;
+$OPT{documentType} = 'text/html';
+$OPT{outputType} = 'xml';
+
+sub do_pm
+{
+  my %q = @_;
+  my $uri = $CFG{placemaker}{uri};
+  my $ua = new LWP::UserAgent;
+  #$ua->proxy([qw(http https)] => 'socks://127.0.0.1:1080');
+  $ua->env_proxy();
+  my $res = $ua->request(POST $uri, [ %q, %OPT ]);
+  if (!$res->is_success)
+  {
+    print STDERR "PlaceMaker call failed:\n  -> POST $uri\n";
+    map { print STDERR "  ->   $_=" . $q{$_} . "\n" } keys %q;
+    map { print STDERR "  ->   $_=" . $OPT{$_} . "\n" } keys %OPT;
+    print STDERR "  <- HTTP " . $res->code . ' ' . $res->message . "\n";
+    print $res->content;
+    return undef;
+  }
+  #my $rss = XML::RAI->parse_string($res->content);
+  $res->content;
+}
+
+sub usage
+{
+  my $name = basename($0);
+  my $spad = (' ') x length($name);
+  print <<EOF;
+usage: $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
+       $spad [ --outputType={xml|rss} ] url(s) ...
+
+EOF
+  exit 64;
+}
+
+{
+  my $show_usage = 0;
+  GetOptions(
+      'appid|a=s' => \$OPT{appid},
+      'documentType|type|t=s' => \$OPT{documentType},
+      'outputType|format|f=s' => \$OPT{outputType},
+      'h|help' => \$show_usage
+    ) or $show_usage = 1;
+  $show_usage = 1 unless defined $OPT{appid};
+  usage if $show_usage || @ARGV == 0;
+}
+
+foreach my $u (@ARGV)
+{
+  my $c = do_pm(documentURL => $u);
+  print $c if defined $c;
+}
