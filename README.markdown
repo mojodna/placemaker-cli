@@ -14,4 +14,10 @@ Or feed it something content directly:
 
     $ cat document.txt | ./placemaker --appid=<appid> --documentType=text/plain -
 
+Optional arguments are (default):
+    $ --documentType=mime/type   (text/html)
+    $ --inputLanguage=lang-code  (en-US)
+    $ --autodisambiguate=0|1     (1)
+    $ --outputType={xml|rss}     (xml)
+
 To register for an app id, visit https://developer.yahoo.com/wsregapp/
