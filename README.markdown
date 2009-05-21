@@ -20,5 +20,6 @@ Optional arguments are (default):
     --inputLanguage=lang-code       (en-US)
     --autodisambiguate=true|false   (false)
     --outputType={xml|rss}          (xml)
+    --focusWoeid=number             (none)
 
 To register for an app id, visit https://developer.yahoo.com/wsregapp/

@@ -18,7 +18,7 @@ $OPT{inputLanguage} = 'en-US';
 $OPT{documentType} = 'text/html';
 $OPT{outputType} = 'xml';
 $OPT{autoDisambiguate} = 'true';
-
+$OPT{focusWoeid} = '';
 
 sub do_pm
 {
@@ -27,7 +27,8 @@ sub do_pm
   my $ua = new LWP::UserAgent;
   #$ua->proxy([qw(http https)] => 'socks://127.0.0.1:1080');
   $ua->env_proxy();
-  my $res = $ua->request(POST $uri, [ %q, %OPT ]);
+  my $req = POST $uri, [ %q, %OPT ];
+  my $res = $ua->request($req);
   if (!$res->is_success)
   {
     print STDERR "PlaceMaker call failed:\n  -> POST $uri\n";
@@ -48,11 +49,11 @@ sub usage
   print <<EOF;
 usage: $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
        $spad [ --inputLanguage=lang-code] [ --autoDisambiguate=true|false ]
-       $spad [ --outputType={xml|rss} ] url(s) ...
+       $spad [ --outputType={xml|rss} ] [ --focusWoeid=1234 ] url(s) ...
   or:
        $name --appid=<YAHOO_APPID> [ --documentType=mime/type ]
        $spad [ --inputLanguage=lang-code] [ --autoDisambiguate=true|false ]
-       $spad [ --outputType={xml|rss} ] -
+       $spad [ --outputType={xml|rss} ] [ --focusWoeid=1234 ] -
 
 EOF
   exit 64;
@@ -66,6 +67,7 @@ EOF
       'inputLanguage|lang|l=s' => \$OPT{inputLanguage},
       'documentType|type|t=s' => \$OPT{documentType},
       'outputType|format|f=s' => \$OPT{outputType},
+      'focusWoeid|woeid|w=s' => \$OPT{focusWoeid},
       'h|help' => \$show_usage
     ) or $show_usage = 1;
   $show_usage = 1 unless defined $OPT{appid};
