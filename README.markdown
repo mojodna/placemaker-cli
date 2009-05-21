@@ -21,5 +21,6 @@ Optional arguments are (default):
     --autodisambiguate=true|false   (false)
     --outputType={xml|rss}          (xml)
     --focusWoeid=number             (none)
+    --documentTitle=string          (none)
 
 To register for an app id, visit https://developer.yahoo.com/wsregapp/
